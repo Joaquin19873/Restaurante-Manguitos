@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurante Campestre Manguitos</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <div id="login-view" class="view active">
+        <div class="login-card wooden-frame">
+            <div class="brand-logo">
+                <h1>🥭 Manguitos</h1>
+                <p>Restaurante Campestre</p>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); login();">
+                <div class="input-group">
+                    <span class="material-icons">person</span>
+                    <input type="text" id="username" placeholder="Usuario (Ej. Cajero)" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <span class="material-icons">lock</span>
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                </div>
+                <button type="submit" class="btn-wood">INGRESAR AL SISTEMA</button>
+            </form>
+            <p id="error-msg" class="error-hidden">🚫 Credenciales incorrectas</p>
+        </div>
+    </div>
+
+    <div id="recepcion-view" class="view">
+        <header class="wooden-header">
+            <h2>🌿 Zona de Terraza y Jardín</h2>
+            <div class="user-info">
+                <span>Hola, Recepcionista</span>
+                <button onclick="logout()" class="btn-exit">Cerrar</button>
+            </div>
+        </header>
+        <div class="content-wrapper">
+            <div class="garden-area" id="table-grid">
+                </div>
+            <div class="panel-lateral wooden-frame">
+                <h3>Estado del Jardín</h3>
+                <div class="stat-row">
+                    <span class="dot free"></span> Disponibles: <b id="free-count">0</b>
+                </div>
+                <div class="stat-row">
+                    <span class="dot busy"></span> Ocupadas: <b id="busy-count">0</b>
+                </div>
+                <hr>
+                <p><small>Selecciona una mesa para cambiar su estado.</small></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="caja-view" class="view">
+        <header class="wooden-header">
+            <h2>🔥 Punto de Venta</h2>
+            <div class="user-info">
+                <span>Hola, Cajero</span>
+                <button onclick="logout()" class="btn-exit">Cerrar</button>
+            </div>
+        </header>
+        <div class="pos-layout">
+            <div class="menu-grid">
+                <div class="food-card" onclick="addToCart('Pachamanca a la Olla', 45)">
+                    <div class="emoji">🍲</div>
+                    <h4>Pachamanca</h4>
+                    <span class="price">S/ 45.00</span>
+                </div>
+                <div class="food-card" onclick="addToCart('Cuy Chactado', 50)">
+                    <div class="emoji">🐹</div>
+                    <h4>Cuy Chactado</h4>
+                    <span class="price">S/ 50.00</span>
+                </div>
+                <div class="food-card" onclick="addToCart('Chicharrón de Cerdo', 35)">
+                    <div class="emoji">🍖</div>
+                    <h4>Chicharrón</h4>
+                    <span class="price">S/ 35.00</span>
+                </div>
+                <div class="food-card" onclick="addToCart('Trucha Frita', 30)">
+                    <div class="emoji">🐟</div>
+                    <h4>Trucha Frita</h4>
+                    <span class="price">S/ 30.00</span>
+                </div>
+                <div class="food-card" onclick="addToCart('Jarra Chicha Morada', 15)">
+                    <div class="emoji">🍇</div>
+                    <h4>Jarra Chicha</h4>
+                    <span class="price">S/ 15.00</span>
+                </div>
+                <div class="food-card" onclick="addToCart('Picarones', 12)">
+                    <div class="emoji">🍩</div>
+                    <h4>Picarones</h4>
+                    <span class="price">S/ 12.00</span>
+                </div>
+            </div>
+            
+            <div class="ticket-wrapper wooden-frame">
+                <h3>📜 Comanda #058</h3>
+                <ul id="cart-list"></ul>
+                <div class="total-display">
+                    Total: S/ <span id="total-price">0.00</span>
+                </div>
+                <button onclick="processPayment()" class="btn-wood full">COBRAR MESA</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-view" class="view">
+        <header class="wooden-header">
+            <h2>📊 Gerencia General</h2>
+            <div class="user-info">
+                <span>Hola, Administrador</span>
+                <button onclick="logout()" class="btn-exit">Cerrar</button>
+            </div>
+        </header>
+        <div class="admin-panel">
+            <div class="kpi-container">
+                <div class="kpi-card">
+                    <h3>Venta Total Hoy</h3>
+                    <p>S/ 2,850.00</p>
+                    <small>+15% vs ayer</small>
+                </div>
+                <div class="kpi-card">
+                    <h3>Plato Estrella</h3>
+                    <p>Pachamanca</p>
+                    <small>42 pedidos</small>
+                </div>
+                <div class="kpi-card">
+                    <h3>Personal Activo</h3>
+                    <p>12 Colaboradores</p>
+                    <small>Todo en orden</small>
+                </div>
+            </div>
+
+            <div class="staff-table wooden-frame">
+                <h3>Control de Personal</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Colaborador</th>
+                            <th>Cargo</th>
+                            <th>Asistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>#01</td><td>Juan Pérez</td><td>Mozos</td><td><span class="badge green">Presente</span></td></tr>
+                        <tr><td>#02</td><td>Maria Garcia</td><td>Cocina</td><td><span class="badge green">Presente</span></td></tr>
+                        <tr><td>#03</td><td>Luis Torres</td><td>Seguridad</td><td><span class="badge red">Falta</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
